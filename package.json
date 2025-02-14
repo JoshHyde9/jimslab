@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "db:deploy:dev": "bunx prisma migrate dev && bunx prisma generate",
+    "db:deploy:prod": "bunx prisma migrate deploy && bunx prisma generate",
     "lint": "next lint"
   },
   "dependencies": {

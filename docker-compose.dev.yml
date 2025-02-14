@@ -5,16 +5,18 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
-    environment:
-      - NODE_ENV=development
     env_file:
       - .env
+    networks:
+      - jimslab-network
     volumes:
       - .:/app
       - /app/node_modules
       - /app/.next
-  db:
+  db-dev:
     image: postgres:15-alpine
+    networks:
+      - jimslab-network
     ports:
       - "5432:5432"
     environment:
@@ -23,8 +25,28 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     env_file:
       - .env
+    command: postgres -c listen_addresses='*'
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  prisma-studio:
+    image: oven/bun:latest
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: bunx prisma studio --port 5555 --browser none
+    ports:
+      - "5555:5555"
+    env_file:
+      - .env
+    networks:
+      - jimslab-network
+    depends_on:
+      web: 
+        condition: service_started
+
+networks:
+  jimslab-network:
+   name: jimslab-network
 
 volumes:
   postgres_data:

@@ -16,8 +16,6 @@ FROM oven/bun:latest
 
 WORKDIR /app
 
-ENV NODE_ENV production
-
 COPY --from=builder /app/package.json .
 COPY --from=builder /app/bun.lockb .
 COPY --from=builder /app/prisma ./prisma/
@@ -29,4 +27,4 @@ RUN bunx prisma generate
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 
-CMD bunx prisma db push && bun start
+CMD ["sh", "-c", "bun db:deploy:prod && bun start"]
