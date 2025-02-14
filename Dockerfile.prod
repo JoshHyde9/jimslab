@@ -1,0 +1,32 @@
+FROM oven/bun:latest AS builder
+
+WORKDIR /app
+
+COPY package.json bun.lockb ./
+
+RUN bun install
+
+COPY . .
+
+RUN bunx prisma generate
+
+RUN bun run build
+
+FROM oven/bun:latest
+
+WORKDIR /app
+
+ENV NODE_ENV production
+
+COPY --from=builder /app/package.json .
+COPY --from=builder /app/bun.lockb .
+COPY --from=builder /app/prisma ./prisma/
+
+RUN bun install --production
+
+RUN bunx prisma generate
+
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+
+CMD bunx prisma db push && bun start
