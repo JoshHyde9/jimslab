@@ -5,8 +5,16 @@ services:
       dockerfile: Dockerfile.prod
     ports:
       - "3000:3000"
-    env_file:
-      - .env.prod
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - DATABASE_URL=${DATABASE_URL}
+      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_GITHUB_ID=${AUTH_GITHUB_ID}
+      - AUTH_GITHUB_SECRET=${AUTH_GITHUB_SECRET}
+      - NEXT_TELEMETRY_DISABLED=${NEXT_TELEMETRY_DISABLED}
+      - AUTH_TRUST_HOST=${AUTH_TRUST_HOST}
     networks:
       - jimslab-network
     depends_on:
@@ -22,8 +30,6 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
-    env_file:
-      - .env.prod
     networks:
       - jimslab-network
     volumes:

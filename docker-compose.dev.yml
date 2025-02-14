@@ -5,10 +5,18 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
-    env_file:
-      - .env
     networks:
       - jimslab-network
+    environment:
+    - POSTGRES_USER=${DEV_POSTGRES_USER}
+    - POSTGRES_PASSWORD=${DEV_POSTGRES_PASSWORD}
+    - POSTGRES_DB=${DEV_POSTGRES_DB}
+    - DATABASE_URL=${DEV_DATABASE_URL}
+    - AUTH_SECRET=${AUTH_SECRET}
+    - AUTH_GITHUB_ID=${AUTH_GITHUB_ID}
+    - AUTH_GITHUB_SECRET=${AUTH_GITHUB_SECRET}
+    - NEXT_TELEMETRY_DISABLED=${NEXT_TELEMETRY_DISABLED}
+    - AUTH_TRUST_HOST=${AUTH_TRUST_HOST}
     volumes:
       - .:/app
       - /app/node_modules
@@ -20,11 +28,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-    env_file:
-      - .env
+      - POSTGRES_USER=${DEV_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${DEV_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${DEV_POSTGRES_DB}
     command: postgres -c listen_addresses='*'
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -36,8 +42,6 @@ services:
     command: bunx prisma studio --port 5555 --browser none
     ports:
       - "5555:5555"
-    env_file:
-      - .env
     networks:
       - jimslab-network
     depends_on:

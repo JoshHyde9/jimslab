@@ -27,4 +27,4 @@ RUN bunx prisma generate
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 
-CMD ["sh", "-c", "bun start"]
+CMD ["sh", "-c", "bun db:deploy:prod && bun start"]
