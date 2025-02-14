@@ -7,9 +7,7 @@ COPY package.json bun.lockb ./
 RUN bun install
 
 COPY . .
-
 RUN bunx prisma generate
-
 RUN bun run build
 
 FROM oven/bun:latest
@@ -19,12 +17,10 @@ WORKDIR /app
 COPY --from=builder /app/package.json .
 COPY --from=builder /app/bun.lockb .
 COPY --from=builder /app/prisma ./prisma/
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
 RUN bun install --production
 
-RUN bunx prisma generate
-
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
-
 CMD ["sh", "-c", "bun db:deploy:prod && bun start"]
