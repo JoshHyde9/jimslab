@@ -13,6 +13,7 @@ services:
     - POSTGRES_DB=${DEV_POSTGRES_DB}
     - DATABASE_URL=${DEV_DATABASE_URL}
     - AUTH_SECRET=${AUTH_SECRET}
+    - AUTH_URL=${DEV_AUTH_URL}
     - AUTH_GITHUB_ID=${AUTH_GITHUB_ID}
     - AUTH_GITHUB_SECRET=${AUTH_GITHUB_SECRET}
     - NEXT_TELEMETRY_DISABLED=${NEXT_TELEMETRY_DISABLED}
@@ -39,6 +40,8 @@ services:
     working_dir: /app
     volumes:
       - .:/app
+    environment:
+      - DATABASE_URL=${DEV_DATABASE_URL}
     command: bunx prisma studio --port 5555 --browser none
     ports:
       - "5555:5555"

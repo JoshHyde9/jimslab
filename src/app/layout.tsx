@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import ReactQueryProvider from "@/lib/query-client";
+import { SessionProvider } from "next-auth/react";
+import { Navbar } from "@/components/ui/navbar";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,9 +29,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen`}
       >
-        {children}
+        <SessionProvider>
+          <ReactQueryProvider>
+            <Navbar />
+            <main className="h-[calc(100%_-_80px)] overflow-y-hidden">
+              {children}
+            </main>
+          </ReactQueryProvider>
+        </SessionProvider>
       </body>
     </html>
   );
