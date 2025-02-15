@@ -3,6 +3,6 @@ import { treaty } from "@elysiajs/eden";
 
 export const { api } = treaty<App>(
   process.env.NODE_ENV === "production"
-    ? process.env.AUTH_URL!
+    ? "https://jimslab.cc"
     : "http://localhost:3000"
 );
