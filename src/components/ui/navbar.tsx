@@ -1,6 +1,8 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
+
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 
 import { HamburgerItem } from "./hamburger-item";
