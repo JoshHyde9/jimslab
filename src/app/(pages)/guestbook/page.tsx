@@ -1,11 +1,13 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 
-import { CreateMessage } from "@/components/create-message";
 import { api } from "@/server/treaty";
+
+import { CreateMessage } from "@/components/create-message";
+
 import { formatCreationDate } from "@/lib/utils";
-import { useSession } from "next-auth/react";
 
 export default function Guestbook() {
   const { data: session } = useSession();
